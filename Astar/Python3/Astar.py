@@ -41,7 +41,7 @@ class Astar:
             text = "Check neighbors: "
             for y in range(-1, 2):
                 for x in range(-1, 2):
-                    if((x == 0 and y == 0) or x == y or -x == y or -y == x): continue
+                    if((x == 0 and y == 0) or x == y): continue
                     neighbor_position = (current.position[0] + x, current.position[1] + y)
                     if(0 <= neighbor_position[0] < len(self.grid)) and (0 <= neighbor_position[1] < len(self.grid)):
                         # тупик

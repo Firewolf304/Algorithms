@@ -61,7 +61,7 @@ public:
             std::vector<int> range(2);
             for(int y = -1; y < 2; y++) {
                 for(int x = -1; x < 2; x++) {
-                    if((x == 0 && y == 0) || x == y || -x == y || -y == x) continue;
+                    if((x == 0 && y == 0) || x == y) continue;
                     std::tuple<int, int> neighbor_position = {std::get<0>(current->position) + x, std::get<1>(current->position) + y};
                     if((0 <= std::get<0>(neighbor_position) && std::get<0>(neighbor_position) < this->grid[std::get<1>(neighbor_position)].size()) && (0 <= std::get<1>(neighbor_position) && std::get<1>(neighbor_position) < this->grid.size())) {
                         if(this->grid[std::get<1>(neighbor_position)].empty()) continue;
