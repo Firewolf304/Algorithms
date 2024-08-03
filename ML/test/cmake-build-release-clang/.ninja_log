@@ -1,0 +1,8 @@
+# ninja log v6
+0	2354	1720941527106166329	build.ninja	1026e036aa414b89
+4	138	1720936876463421219	CMakeFiles/test.dir/src/simple_model.cpp.o.ddi	feae3a7dca449bef
+138	141	1720936876596754619	CMakeFiles/test.dir/src/main.cpp.o.modmap	33b032942483dc7c
+4	138	1720936876463421219	CMakeFiles/test.dir/src/main.cpp.o.ddi	3a2d0a9903d8acdf
+138	141	1720936876596754619	CMakeFiles/test.dir/CXX.dd	33b032942483dc7c
+138	141	1720936876596754619	/home/firewolf/CLionProjects/Algorithms/ML/test/cmake-build-release-clang/CMakeFiles/test.dir/CXXModules.json	33b032942483dc7c
+138	141	1720936876596754619	CMakeFiles/test.dir/src/simple_model.cpp.o.modmap	33b032942483dc7c

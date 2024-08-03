@@ -1,0 +1,9 @@
+{
+  "revision": 0,
+  "rules": [
+    {
+      "primary-output": "CMakeFiles/test.dir/src/simple_model.cpp.o"
+    }
+  ],
+  "version": 1
+}
