@@ -1,16 +1,16 @@
 cmake_minimum_required(VERSION 3.28)
 project(k_means CUDA)
 
-set(CMAKE_CUDA_STANDARD 23)
+set(CMAKE_CUDA_STANDARD 20)
 find_package(fmt)
+
 #find_package(GTest REQUIRED)
 add_executable(k_means src/main.cu
         include/local.hpp
         include/cpu.hxx
         include/libs.hpp
-        src/objects/cpu.cxx
         include/points/point.hxx
-        src/objects/point.cpp
+        include/gpu.cu
 )
 target_link_libraries(k_means
         PRIVATE

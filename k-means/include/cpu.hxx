@@ -11,56 +11,65 @@ namespace kmeans {
     using vars_test = std::variant<std::string, int, double, float>;
     using var_test = std::variant<vars_test, std::vector<vars_test>>;
     class kmean_cpu {
-        std::vector<Point> centroid { };
+        std::vector<Point> centroid;
+        std::vector<Point> centroids;
+        int k = -1;
         bool test;
     public:
         kmean_cpu(const std::vector<Point> &centroid, bool test = false) : centroid(centroid), test(test) {}
-        double distance (Point & a, Point & b) {
-            return a.distance(b);
+        float distance (Point & a, Point & b) {
+            return std::sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
         }
-        double distance (Point a, Point b) {
-            return a.distance(b);
+        float distance (Point a, Point b) {
+            return std::sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
         }
-        double distance_sqrt (Point & a, Point & b) {
-            return std::sqrt((a.get_x() - b.get_x()) * (a.get_x() - b.get_x()) + (a.get_y() - b.get_y()) * (a.get_y() - b.get_y()));
+        float distance_sqrt (Point & a, Point & b) {
+            return std::sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
         }
         Point calculateCentroid(int cluster) {
-            double sumX = 0, sumY = 0;
+            float sumX = 0, sumY = 0;
             int count = 0;
 
             for (auto point : this->centroid) {
                 if (point.cluster == cluster) {
-                    sumX += point.get_x();
-                    sumY += point.get_y();
+                    sumX += point.x;
+                    sumY += point.y;
                     ++count;
                 }
             }
             return count > 0 ? Point(sumX / count, sumY / count) : Point(0, 0);
         }
-
-        void start(int k) {
-            std::vector<Point> centroids;
+        std::vector<Point> & init_centroids(int k) {
+            this->k = k;
             std::random_device rd;
             std::mt19937 gen(rd());
             std::uniform_int_distribution<> distrib(0, this->centroid.size());
-
-            // Инициализация случайных центроидов
             for (int i = 0; i < k; ++i) {
                 int idx = distrib(gen);
-                centroids.push_back(this->centroid[idx]);
+                this->centroids.push_back(this->centroid[idx]);
             }
+            return this->centroids;
+        }
 
+        void start(std::vector<Point> & init_centroids) {
+            this->centroids = init_centroids;
+            start();
+        }
+
+        void start() {
+            if(this->centroids.empty()) {
+                throw std::runtime_error("Centroids are not initialized");
+            }
             bool changed = true;
             while (changed) {
                 changed = false;
 
-                // Присвоение точек ближайшему центроиду
                 for (auto &point : centroid) {
                     int nearestCluster = -1;
-                    double minDist = std::numeric_limits<double>::max();
+                    float minDist = std::numeric_limits<float>::max();
 
                     for (int i = 0; i < k; ++i) {
-                        double dist = distance_sqrt(point, centroids[i]);
+                        float dist = distance_sqrt(point, centroids[i]);
                         if (dist < minDist) {
                             minDist = dist;
                             nearestCluster = i;
@@ -73,8 +82,8 @@ namespace kmeans {
                     }
                 }
 
-                // Обновление центроидов
-                for (int i = 0; i < k; ++i) {
+
+                for (int i = 0; i < k; ++i) { // update centroids
                     centroids[i] = calculateCentroid(i);
                 }
             }
@@ -82,13 +91,27 @@ namespace kmeans {
 
         void output() {
             for(auto &point : this->centroid) {
-                fmt::println("({},{}) -> {}", point.get_x(), point.get_y(), point.cluster);
+                fmt::println("({},{}) -> {}", point.x, point.y, point.cluster);
+            }
+        }
+
+        void output_sort() {
+            std::map<int, std::vector<Point>> mapper{};
+            for(auto &point : this->centroid) {
+                mapper[point.cluster].push_back(point);
+
+            }
+            for(auto cluster : mapper) {
+                fmt::println("============= {} =============", cluster.first);
+                for(auto & point : cluster.second) {
+                    fmt::println("({} {}) -> {}", point.x, point.y, point.cluster);
+                }
             }
         }
 
         /*
          * Test values:
-         *      distance - vector<double>
+         *      distance - vector<float>
          */
         std::map<std::string, var_test> get_tests() {
             return {

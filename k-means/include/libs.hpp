@@ -11,6 +11,8 @@
 #include <cuda_device_runtime_api.h>
 #include <thrust/host_vector.h>
 #include <thrust/device_vector.h>
+#include <thrust/copy.h>
+#include <atomic>
 
 // default
 #include <iostream>

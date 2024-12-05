@@ -6,5 +6,6 @@
 #define K_MEANS_LOCAL_HPP
 
 #include "cpu.hxx"
+#include "gpu.cu"
 
 #endif //K_MEANS_LOCAL_HPP
