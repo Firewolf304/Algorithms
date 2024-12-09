@@ -75,7 +75,7 @@ int main() {
         std::cout << ("TESTS:\n");
         std::cout << std::fixed << std::setprecision(20) << "Cophenetic correlation="
                   << cpu.calculateCopheneticCorrelation() << std::endl;
-        std::cout << std::fixed << std::setprecision(20) << "Cophenetic error=" << cpu.estimateCopheneticError(30)
+        std::cout << std::fixed << std::setprecision(20) << "Cophenetic error=" << cpu.estimateCopheneticError(10)
                   << std::endl;
     }
 
@@ -89,7 +89,7 @@ int main() {
         std::cout << ("TESTS:\n");
         std::cout << std::fixed << std::setprecision(20) << "Cophenetic correlation="
                   << gpu.calculateCopheneticCorrelation() << std::endl;
-        std::cout << std::fixed << std::setprecision(20) << "Cophenetic error=" << gpu.estimateCopheneticError(30)
+        std::cout << std::fixed << std::setprecision(20) << "Cophenetic error=" << gpu.estimateCopheneticError(10)
                   << std::endl;
     }
 
