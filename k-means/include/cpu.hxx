@@ -17,12 +17,6 @@ namespace kmeans {
         bool test;
     public:
         kmean_cpu(const std::vector<Point> &centroid, bool test = false) : centroid(centroid), test(test) {}
-        float distance (Point & a, Point & b) {
-            return std::sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
-        }
-        float distance (Point a, Point b) {
-            return std::sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
-        }
         float distance_sqrt (Point & a, Point & b) {
             return std::sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
         }
@@ -53,12 +47,13 @@ namespace kmeans {
             return this->centroids;
         }
 
-        void start(std::vector<Point> & init_centroids) {
+        void start(int k, std::vector<Point> & init_centroids, bool output = true) {
+            this->k = k;
             this->centroids = init_centroids;
-            start();
+            start(output);
          }
 
-        void start() {
+        void start(bool output = true) {
             if(this->centroids.empty()) {
                 throw std::runtime_error("Centroids are not initialized");
             }
@@ -94,9 +89,11 @@ namespace kmeans {
                 }
                 count++;
             }
-            auto end = std::chrono::high_resolution_clock::now();
-            auto duration = end - start;
-            std::cout << "Execution time: " << duration / std::chrono::milliseconds(1) << " ms" << std::endl;
+            if(output) {
+                auto end = std::chrono::high_resolution_clock::now();
+                auto duration = end - start;
+                std::cout << "Execution time: " << duration / std::chrono::milliseconds(1) << " ms" << std::endl;
+            }
         }
 
         void output() {
@@ -125,31 +122,70 @@ namespace kmeans {
             }
             std::ofstream file("output_cpu.txt", std::ios::out | std::ios::trunc);
             for(auto cluster : mapper) {
-                file << "============= " << cluster.first << " =============\n";
+                //file << "============= " << cluster.first << " =============\n";
                 //fmt::println("============= {} =============", cluster.first);
                 for(auto & point : cluster.second) {
-                    file << "(" << point.x << " " << point.y << ") -> " << point.cluster << std::endl;
+                    file << point.x << " " << point.y << " " << point.cluster << std::endl;
                     //fmt::println("({} {}) -> {}", point.x, point.y, point.cluster);
                 }
             }
             file.close();
         }
 
-        /*
-         * Test values:
-         *      distance - vector<float>
-         */
-        std::map<std::string, var_test> get_tests() {
-            return {
-                    {
-                        "distance",
-                        std::vector<vars_test>{
-                            distance( {0,0}, {1,1}),
-                            distance( {1,1}, {2,2}),
-                            distance( {-1,-1}, {2,2})
-                        },
-                    },
-            };
+        double calculateCopheneticCorrelation() {
+            std::vector<double> dataDistances, clusterDistances;
+
+            for (size_t i = 0; i < centroid.size(); ++i) {
+                for (size_t j = i + 1; j < centroid.size(); ++j) {
+                    dataDistances.push_back(distance_sqrt(centroid[i], centroid[j]));
+                }
+            }
+
+            for (size_t i = 0; i < centroid.size(); ++i) {
+                for (size_t j = i + 1; j < centroid.size(); ++j) {
+                    if (centroid[i].cluster == centroid[j].cluster) {
+                        clusterDistances.push_back(0.0);
+                    } else {
+                        clusterDistances.push_back(distance_sqrt(centroids[centroid[i].cluster], centroids[centroid[j].cluster]));
+                    }
+                }
+            }
+
+            return pearsonCorrelation(dataDistances, clusterDistances);
+        }
+
+        double pearsonCorrelation(const std::vector<double>& x, const std::vector<double>& y) {
+            double meanX = std::accumulate(x.begin(), x.end(), 0.0) / x.size();
+            double meanY = std::accumulate(y.begin(), y.end(), 0.0) / y.size();
+
+            double numerator = 0.0, denomX = 0.0, denomY = 0.0;
+
+            for (size_t i = 0; i < x.size(); ++i) {
+                double diffX = x[i] - meanX;
+                double diffY = y[i] - meanY;
+                numerator += diffX * diffY;
+                denomX += diffX * diffX;
+                denomY += diffY * diffY;
+            }
+
+            return numerator / std::sqrt(denomX * denomY);
+        }
+        double estimateCopheneticError(int numIterations) {
+            std::vector<double> correlations;
+            for (int i = 0; i < numIterations; ++i) {
+
+                this->centroids = init_centroids(this->k);
+                start(false);
+
+                correlations.push_back(calculateCopheneticCorrelation());
+            }
+            double mean = std::accumulate(correlations.begin(), correlations.end(), 0.0) / correlations.size();
+            double variance = 0.0;
+            for (double corr : correlations) {
+                variance += (corr - mean) * (corr - mean);
+            }
+            variance /= correlations.size();
+            return std::sqrt(variance);
         }
     };
 }

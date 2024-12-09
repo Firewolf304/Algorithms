@@ -160,13 +160,26 @@ namespace kmeans {
             return h_count > 0 ? Point(h_sumX / h_count, h_sumY / h_count) : Point(0, 0);
         }
         // Старт подготовленных центроидов
-        void start(int k, std::vector<Point> & init_centroids) {
+        void start(int k, std::vector<Point> & init_centroids, bool output = true) {
             this->k = k;
             this->centroids = thrust::device_vector<Point>(init_centroids.begin(), init_centroids.end());
-            start();
+            start(output);
         }
-
-        void start() {
+        thrust::device_vector<Point> init_centroids(int k) {
+            this->k = k;
+            thrust::host_vector<Point> p = this->points;
+            std::vector<Point> cent;
+            std::random_device rd;
+            std::mt19937 gen(rd());
+            std::uniform_int_distribution<> distrib(0, this->points.size());
+            for (int i = 0; i < k; ++i) {
+                int idx = distrib(gen);
+                cent.push_back(p[idx]);
+            }
+            p.clear();
+            return {cent.begin(), cent.end()};
+        }
+        void start(bool output = true) {
             if(this->centroids.empty()) {
                 throw std::runtime_error("Centroids are not initialized");
             }
@@ -222,9 +235,11 @@ namespace kmeans {
                 this->centroids = hostCentroids;*/
                 count++;
             }
-            auto end = std::chrono::high_resolution_clock::now();
-            auto duration = end - start;
-            std::cout << "Execution time: " << duration / std::chrono::milliseconds(1) << " ms" << std::endl;
+            if(output) {
+                auto end = std::chrono::high_resolution_clock::now();
+                auto duration = end - start;
+                std::cout << "Execution time: " << duration / std::chrono::milliseconds(1) << " ms" << std::endl;
+            }
         }
 
         void output() {
@@ -256,12 +271,68 @@ namespace kmeans {
             }
             std::ofstream file("output_gpu.txt", std::ios::out | std::ios::trunc);
             for(auto cluster : mapper) {
-                file << "============= " << cluster.first << " =============\n";
+                //file << "============= " << cluster.first << " =============\n";
                 for(auto & point : cluster.second) {
-                    file << "(" << point.x << " " << point.y << ") -> " << point.cluster << std::endl;
+                    file << point.x << " " << point.y << " " << point.cluster << std::endl;
                 }
             }
             file.close();
+        }
+        double calculateCopheneticCorrelation() {
+            std::vector<double> dataDistances, clusterDistances;
+            thrust::host_vector<Point> centroid = this->points;
+            thrust::host_vector<Point> centroiders = this->centroids;
+            for (size_t i = 0; i < centroid.size(); ++i) {
+                for (size_t j = i + 1; j < centroid.size(); ++j) {
+                    dataDistances.push_back(distance_sqrt(centroid[i], centroid[j]));
+                }
+            }
+
+            for (size_t i = 0; i < centroid.size(); ++i) {
+                for (size_t j = i + 1; j < centroid.size(); ++j) {
+                    if (centroid[i].cluster == centroid[j].cluster) {
+                        clusterDistances.push_back(0.0);
+                    } else {
+                        clusterDistances.push_back(distance_sqrt(centroiders[centroid[i].cluster], centroiders[centroid[j].cluster]));
+                    }
+                }
+            }
+
+            return pearsonCorrelation(dataDistances, clusterDistances);
+        }
+
+        double pearsonCorrelation(const std::vector<double>& x, const std::vector<double>& y) {
+            double meanX = std::accumulate(x.begin(), x.end(), 0.0) / x.size();
+            double meanY = std::accumulate(y.begin(), y.end(), 0.0) / y.size();
+
+            double numerator = 0.0, denomX = 0.0, denomY = 0.0;
+
+            for (size_t i = 0; i < x.size(); ++i) {
+                double diffX = x[i] - meanX;
+                double diffY = y[i] - meanY;
+                numerator += diffX * diffY;
+                denomX += diffX * diffX;
+                denomY += diffY * diffY;
+            }
+
+            return numerator / std::sqrt(denomX * denomY);
+        }
+        double estimateCopheneticError(int numIterations) {
+            std::vector<double> correlations;
+            for (int i = 0; i < numIterations; ++i) {
+
+                this->centroids = init_centroids(this->k);
+                start(false);
+
+                correlations.push_back(calculateCopheneticCorrelation());
+            }
+            double mean = std::accumulate(correlations.begin(), correlations.end(), 0.0) / correlations.size();
+            double variance = 0.0;
+            for (double corr : correlations) {
+                variance += (corr - mean) * (corr - mean);
+            }
+            variance /= correlations.size();
+            return std::sqrt(variance);
         }
     };
 }
