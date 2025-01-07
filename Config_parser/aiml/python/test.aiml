@@ -1,0 +1,14 @@
+<aiml version="1.0.1" encoding="UTF-8">
+    <category>
+        <pattern>HELLO</pattern>
+        <template>Hi there! How can I help you?</template>
+    </category>
+    <category>
+        <pattern>BYE</pattern>
+        <template>Goodbye!</template>
+    </category>
+    <category>
+        <pattern>WHAT IS YOUR NAME</pattern>
+        <template>I am a chatbot created using AIML.</template>
+    </category>
+</aiml>

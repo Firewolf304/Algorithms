@@ -1,3 +1,0 @@
-/home/firewolf/CLionProjects/Algorithms/ML/test/cmake-build-release-clang/CMakeFiles/test.dir
-/home/firewolf/CLionProjects/Algorithms/ML/test/cmake-build-release-clang/CMakeFiles/edit_cache.dir
-/home/firewolf/CLionProjects/Algorithms/ML/test/cmake-build-release-clang/CMakeFiles/rebuild_cache.dir

@@ -1,5 +1,0 @@
-ninja_dyndep_version = 1.0
-build CMakeFiles/test.dir/src/main.cpp.o: dyndep
-
-build CMakeFiles/test.dir/src/simple_model.cpp.o: dyndep
-
