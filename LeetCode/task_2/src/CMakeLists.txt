@@ -1,0 +1,1 @@
+add_library(locallib STATIC lib.cpp)
