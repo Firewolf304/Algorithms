@@ -3,15 +3,11 @@
 #include <fmt/base.h>
 #include <iostream>
 
-// libs
-#include "../include/dotenv-cpp.hpp"
-
 // local libs
 #include "../include/lib.hpp"
 
 int main() {
   fmt::print("Filepath {}\n", std::filesystem::current_path().c_str());
-  dotenv::init(".env");
   ListNode l12(3);
   ListNode l11(4, &l12);
   ListNode l1(2, &l11);

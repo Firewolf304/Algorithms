@@ -47,3 +47,7 @@ Thumbs.db
 *.tmp
 *.bak
 *.old
+.vscode
+.vscode/**
+.clang-format
+CMakePresets.json
