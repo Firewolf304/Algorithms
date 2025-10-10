@@ -1,71 +1,35 @@
-# Cpp Template Project (VSCode + CMake + Ninja)
+# Binary search
 
-This is a starter template for C++ projects using:
-* CMake (with presets for GCC/Clang)
-* Ninja as the build system
-* vcpkg for dependency management
-* VSCode for development and debugging
+Using a algorithm based on Binary-Search for searching index of value from ITMO Academy:
+![alt text](images/image.png)
 
-## Project structure
+For practice using easy-check method:
 ```
-.
-├── CMakeLists.txt              # Main CMake entry point
-├── CMakePresets.json           # Build presets
-├── LICENSE
-├── README.md
-├── cmake/                      # Custom CMake helper scripts
-│   ├── LinkerSettings.cmake    # Linker auto detector
-│   ├── Packages.cmake          # Package list
-│   ├── Targets.cmake           # Target list
-│   ├── Vcpkg.cmake             # Vcpkg detector
-│   └── VcpkgInstall.cmake      # Vcpkg installer
-├── config.json                 # Project configuration
-├── docker/
-│   └── Dockerfile              # Build environment
-├── docs/
-│   └── installs.md             # Setup and dependencies notes
-├── include/
-│   ├── dotenv-cpp.hpp          # Dotenv lib
-│   └── lib.hpp                 # Lib example
-├── src/
-│   ├── lib.cpp                 # Source example
-│   └── main.cpp                # Main file
-└── vcpkg.json                  # vcpkg manifest with dependencies
+int search(const std::vector<int> &massive, int value) {
+  auto length = massive.size(); 
+  auto left = 0;
+  auto right = length - 1;
+  while (left <= right && right < length && left >= 0) {
+    int mid = left + (right - left) / 2;
+    if (massive[mid] == value)
+      return mid;
+    else if (massive[left] == value)
+      return left;
+    else if (massive[right] == value)
+      return right;
+
+    if (massive[mid] < value) {
+      left = mid + 1;
+    } else {
+      right = mid - 1;
+    }
+  }
+  return -1;
+}
 ```
 
-## Building
-his project uses CMakePresets (requires CMake ≥ 3.30.8).
-Available configure presets:
+Conceptually, I would like to describe the condition of the `while` loop: `while (left <= right && right < length && left >= 0)`. The "left" and "right" checks are necessary, because if an element is missing, they can divide 0 by 2, which can lead to unpredictable consequences with an infinite loop.
 
-* ninja-gcc-debug — Debug build with GCC
-* ninja-clang-debug — Debug build with Clang
-
-Build workflow:
-```
-# Configure with GCC
-cmake --preset ninja-gcc-debug
-
-# Build
-cmake --build --preset gcc-debug -j
-```
-Build artifacts are placed in ./ninja-gcc-debug/ or ./ninja-clang-debug/.
-
-## Docs
-* [Install](docs/installs.md)
-
-## TODO
-- [ ] Add docker deploy/debug
-- [ ] Add tests
-- [ ] Add CI/CD tests
-- [ ] Add vcpkg autodeploy
-- [ ] Add old ```make``` support
-- [x] Add clang-format
-- [ ] Add clang-tidy
-- [x] Add Release (gcc/clang)
-- [x] Add BuildConfig
-- [x] Add tests
-- [x] Refactor locallib link to ```only headers``` and add local ```target link sources```
-- [ ] Add fuze testing
-- [ ]
-
-
+`mid` is a middle for searching
+`left` is a left pose
+`rigth` is a rigth pose 
