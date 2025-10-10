@@ -1,0 +1,49 @@
+# Build artifacts
+bin/
+obj/
+out/
+build/
+ninja-clang-debug/
+ninja-clang-debug/**
+ninja-gcc-debug/
+ninja-gcc-debug/**
+ninja-gcc-release/
+ninja-gcc-release/**
+ninja-clang-release/
+ninja-clang-release/**
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# vcpkg artifacts
+vcpkg_installed/
+vcpkg_installed/**
+vcpkg_buildtrees/
+vcpkg_buildtrees/**
+vcpkg_downloads/
+vcpkg_downloads/**
+vcpkg_packages/
+vcpkg_packages/**
+
+# Visual Studio files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# IDE files
+.idea/
+*.swp
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Others
+*.tmp
+*.bak
+*.old

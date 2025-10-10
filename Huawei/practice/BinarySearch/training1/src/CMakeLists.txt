@@ -1,0 +1,1 @@
+add_library(locallib STATIC practice1_basicsearch.cpp)
