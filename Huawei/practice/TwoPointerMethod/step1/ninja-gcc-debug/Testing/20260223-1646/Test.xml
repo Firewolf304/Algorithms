@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Site BuildName="Linux-g++"
+	BuildStamp="20260223-1646-Experimental"
+	Name="fedor"
+	Generator="ctest-3.31.6"
+	CompilerName="/usr/sbin/g++"
+	CompilerVersion="15.2.1"
+	OSName="Linux"
+	Hostname="fedor"
+	OSRelease="6.12.54-linuxkit"
+	OSVersion="#1 SMP Tue Nov  4 21:21:47 UTC 2025"
+	OSPlatform="aarch64"
+	Is64Bits="1"
+	VendorString=""
+	VendorID="Unknown Manufacturer"
+	FamilyID="8"
+	ModelID="0"
+	ModelName=""
+	ProcessorCacheSize="0"
+	NumberOfLogicalCPU="10"
+	NumberOfPhysicalCPU="1"
+	TotalVirtualMemory="4095"
+	TotalPhysicalMemory="7836"
+	LogicalProcessorsPerPhysical="10"
+	ProcessorClockFrequency="0"
+	>
+	<Testing>
+		<StartDateTime>Feb 23 16:51 UTC</StartDateTime>
+		<StartTestTime>1771865486</StartTestTime>
+		<TestList/>
+		<EndDateTime>Feb 23 16:51 UTC</EndDateTime>
+		<EndTestTime>1771865486</EndTestTime>
+		<ElapsedMinutes>0</ElapsedMinutes>
+	</Testing>
+</Site>
