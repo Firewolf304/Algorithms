@@ -1,0 +1,99 @@
+{
+    "version": 6,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 20
+    },
+    "configurePresets": [
+        {
+            "name": "ninja-gcc-debug",
+            "displayName": "Ninja GCC Debug",
+            "generator": "Ninja",
+            "binaryDir": "${workspaceFolder}/${presetName}",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "BUILD_TESTING": "ON",
+                "CMAKE_C_COMPILER": "gcc",
+                "CMAKE_CXX_COMPILER": "g++",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+            },
+            "environment": {
+                "CMAKE_BUILD_NAME": "ninja-gcc-debug",
+                "CMAKE_PROJECTNAME_ENV": "${workspaceFolderBasename}"
+            }
+        },
+        {
+            "name": "ninja-clang-debug",
+            "displayName": "Ninja Clang Debug",
+            "generator": "Ninja",
+            "binaryDir": "${workspaceFolder}/${presetName}",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "BUILD_TESTING": "ON",
+                "CMAKE_C_COMPILER": "clang",
+                "CMAKE_CXX_COMPILER": "clang++",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+            },
+            "environment": {
+                "CMAKE_BUILD_NAME": "ninja-clang-debug",
+                "CMAKE_PROJECTNAME_ENV": "${workspaceFolderBasename}"
+            }
+        },
+        {
+            "name": "ninja-gcc-release",
+            "displayName": "Ninja GCC Release",
+            "generator": "Ninja",
+            "binaryDir": "${workspaceFolder}/${presetName}",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "BUILD_TESTING": "OFF",
+                "CMAKE_C_COMPILER": "gcc",
+                "CMAKE_CXX_COMPILER": "g++",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+            },
+            "environment": {
+                "CMAKE_BUILD_NAME": "ninja-gcc-release",
+                "CMAKE_PROJECTNAME_ENV": "${workspaceFolderBasename}"
+            }
+        },
+        {
+            "name": "ninja-clang-release",
+            "displayName": "Ninja Clang Release",
+            "generator": "Ninja",
+            "binaryDir": "${workspaceFolder}/${presetName}",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "BUILD_TESTING": "OFF",
+                "CMAKE_C_COMPILER": "clang",
+                "CMAKE_CXX_COMPILER": "clang++",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+            },
+            "environment": {
+                "CMAKE_BUILD_NAME": "ninja-clang-release",
+                "CMAKE_PROJECTNAME_ENV": "${workspaceFolderBasename}"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "gcc-debug",
+            "configurePreset": "ninja-gcc-debug",
+            "cleanFirst": true
+        },
+        {
+            "name": "clang-debug",
+            "configurePreset": "ninja-clang-debug",
+            "cleanFirst": true
+        },
+        {
+            "name": "gcc-release",
+            "configurePreset": "ninja-gcc-release",
+            "cleanFirst": false
+        },
+        {
+            "name": "clang-release",
+            "configurePreset": "ninja-clang-release",
+            "cleanFirst": true
+        }
+    ]
+}
