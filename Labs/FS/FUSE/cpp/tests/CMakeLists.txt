@@ -16,6 +16,7 @@ if(BUILD_TESTING)
     endif()
 
     include(GoogleTest)
+    
     gtest_discover_tests(${CMAKE_TEST_PROJECTNAME}
         DISCOVERY_MODE PRE_TEST
         EXTRA_ARGS --gtest_color=yes
