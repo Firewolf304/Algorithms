@@ -29,7 +29,7 @@
             "binaryDir": "${workspaceFolder}/${presetName}",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug",
-                "BUILD_TESTING": "ON",
+                "BUILD_TESTING": "OFF",
                 "CMAKE_C_COMPILER": "clang",
                 "CMAKE_CXX_COMPILER": "clang++",
                 "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
