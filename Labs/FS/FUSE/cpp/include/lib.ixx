@@ -31,6 +31,14 @@ public:
       stbuf->st_nlink = 2;
       return 0;
     }
+    // Убираем начальный '/' для поиска файла
+    std::string filename = p.substr(1);
+    if (files.find(filename) != files.end()) {
+      stbuf->st_mode = S_IFREG | 0644;
+      stbuf->st_nlink = 1;
+      stbuf->st_size = files[filename]->getContext().size();
+      return 0;
+    }
     return -ENOENT;
   }
 
