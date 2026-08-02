@@ -4,7 +4,8 @@
 #include <iostream>
 #include <memory>
 #include <vector>
-#include <fmt/core.h>
+//#include <fmt/core.h>
+#include <print>
 #include <algorithm>
 
 #ifndef ASTAR_ASTAR_ALGOS_HPP
@@ -52,12 +53,14 @@ public:
         while(!reachable.empty()) {
             auto current = *(--reachable.end());
             reachable.pop_back();
-            fmt::print("Current: ({},{})\n", std::get<0>(current->position), std::get<1>(current->position));
+            //fmt::print("Current: ({},{})\n", std::get<0>(current->position), std::get<1>(current->position));
+            std::print("Current: ({},{})\n", std::get<0>(current->position), std::get<1>(current->position));
             if(*current == b){
                 return build_path(current);
             }
             explored.push_back(current);
-            fmt::print("Check neighbors:");
+            std::print("Check neighbors:");
+            //fmt::print("Check neighbors:");
             std::vector<int> range(2);
             for(int y = -1; y < 2; y++) {
                 for(int x = -1; x < 2; x++) {
@@ -75,7 +78,8 @@ public:
                             }) != explored.end()
                         ) continue;
 
-                        fmt::print(" Neighbor ({},{})={}", std::get<0>(neighbor_position), std::get<1>(neighbor_position), this->grid[std::get<1>(neighbor_position)][std::get<0>(neighbor_position)]);
+                        //fmt::print(" Neighbor ({},{})={}", std::get<0>(neighbor_position), std::get<1>(neighbor_position), this->grid[std::get<1>(neighbor_position)][std::get<0>(neighbor_position)]);
+                        std::print(" Neighbor ({},{})={}", std::get<0>(neighbor_position), std::get<1>(neighbor_position), this->grid[std::get<1>(neighbor_position)][std::get<0>(neighbor_position)]);
                         neighbor_node.g = current->g + 1;
                         neighbor_node.h = ((std::get<0>(neighbor_position) - std::get<0>(b.position)^2) + (std::get<1>(neighbor_position) - std::get<1>(b.position)^2));  // Euclidean distance as heuristic
                         neighbor_node.f = neighbor_node.g + neighbor_node.h;
@@ -95,7 +99,8 @@ public:
                     }
                 }
             }
-            fmt::print("\n");
+            std::print("\n");
+            //fmt::print("\n");
         }
         return {};
     }

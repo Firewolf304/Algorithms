@@ -1,5 +1,6 @@
 #include <iostream>
-#include "astar_algos.hpp"
+#include <print>
+#include "./astar_algos.hpp"
 
 int main() {
     std::cout << "Hello, World!" << std::endl;
@@ -12,9 +13,12 @@ int main() {
     }
     for(int y = 0; y < way.size(); y++) {
         for(int x = 0; x < way[y].size(); x++) {
-            fmt::print("{}", way[y][x]);
+            //std::cout << std::format("")
+            //fmt::print("{}", way[y][x]);
+            std::print("{}", way[y][x]);
         }
-        fmt::print("\n");
+        std::cout << "\n";
+        //fmt::print("\n");
     }
     return 0;
 }
