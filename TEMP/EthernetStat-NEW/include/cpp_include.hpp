@@ -1,0 +1,11 @@
+//
+// Created by firewolf on 05.07.24.
+//
+
+#pragma once
+#include <iostream>
+#include <generator>
+#include <print>
+#include <chrono>
+#include <future>
+#include <unordered_map>
