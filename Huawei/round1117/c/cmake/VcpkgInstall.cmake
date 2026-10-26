@@ -1,0 +1,6 @@
+if(NOT DEFINED VCPKG_ROOT)
+  set(VCPKG_ROOT "${CMAKE_CURRENT_LIST_DIR}/../vcpkg")
+endif()
+if(NOT EXISTS "${VCPKG_ROOT}/.vcpkg-root")
+    file(MAKE_DIRECTORY "${VCPKG_ROOT}")
+endif()
